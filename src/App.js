@@ -6,8 +6,8 @@ import Hotels from './components/hotels/Hotels';
 function App() {
 	return (
 		<div className='App'>
-			<Header />
 			<Menu />
+			<Header />
 			<Hotels />
 		</div>
 	);
