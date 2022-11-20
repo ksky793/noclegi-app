@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 const Menu = () => {
 	return (
-		<Navbar collapseOnSelect expand='lg' bg='primary' variant='dark'>
+		<Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
 			<Container>
 				<Navbar.Brand href='#home'>Noclegi.com</Navbar.Brand>
 				<Navbar.Toggle aria-controls='responsive-navbar-nav' />

@@ -1,5 +1,11 @@
+import Searchbar from './searchbar/Searchbar';
+import styles from './Header.module.css';
 const Header = () => {
-	return <h1>Header</h1>;
+	return (
+		<header className={`${styles.header} `}>
+			<Searchbar />
+		</header>
+	);
 };
 
 export default Header;
