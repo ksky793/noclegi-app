@@ -1,9 +1,14 @@
 import Hotel from '../hotels/hotel/Hotel';
-const Hotels = () => {
+import styles from './Hotels.module.css';
+const Hotels = (props) => {
 	return (
-		<div>
-			<Hotel />
-			<Hotel />
+		<div className={`${styles.container} container`}>
+			<h2 className={`${styles.title}`}>Oferty:</h2>
+			{/* <Hotel />
+			<Hotel /> */}
+			{props.hotels.map((hotel, index) => (
+				<Hotel {...hotel} key={index} />
+			))}
 		</div>
 	);
 };

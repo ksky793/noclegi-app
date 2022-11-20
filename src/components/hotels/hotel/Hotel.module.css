@@ -1,0 +1,9 @@
+.hotel {
+	/* border: 1px solid rgb(189, 189, 189); */
+	margin-bottom: 20px;
+	box-shadow: 0 0 7px 1px rgb(193, 193, 193);
+	/* background-color: gainsboro; */
+}
+.bottom {
+	padding: 20px;
+}
