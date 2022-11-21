@@ -2,6 +2,9 @@ import './App.css';
 import Menu from './components/menu/Menu';
 import Header from './components/header/Header';
 import Hotels from './components/hotels/Hotels';
+import Searchbar from './components/header/searchbar/Searchbar';
+import Footer from './components/footer/Footer';
+import Layout from './components/layout/Layout';
 import { useState } from 'react';
 
 const hotelsData = [
@@ -31,11 +34,16 @@ function App() {
 		setHotels(newHotels);
 	};
 	return (
-		<div className='App'>
-			<Menu />
-			<Header onSearch={(term) => handleOnSearchHotels(term)} />
-			<Hotels hotels={hotels} />
-		</div>
+		<Layout
+			header={
+				<Header>
+					<Searchbar onSearch={(term) => handleOnSearchHotels(term)} />
+				</Header>
+			}
+			menu={<Menu />}
+			hotels={<Hotels hotels={hotels} />}
+			footer={<Footer />}
+		/>
 	);
 }
 
