@@ -1,9 +1,9 @@
 import Searchbar from './searchbar/Searchbar';
 import styles from './Header.module.css';
-const Header = () => {
+const Header = (props) => {
 	return (
 		<header className={`${styles.header} `}>
-			<Searchbar />
+			<Searchbar onSearch={props.onSearch} />
 		</header>
 	);
 };
