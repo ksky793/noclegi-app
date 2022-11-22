@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import ThemeContext from '../../../context/ThemeContext';
 
 const Searchbar = (props) => {
+	const color = useContext(ThemeContext);
 	const [term, setTerm] = useState('');
 
 	const search = () => {
@@ -17,7 +19,7 @@ const Searchbar = (props) => {
 					placeholder='Szukaj...'
 					style={{ height: '50px' }}
 				></input>
-				<button className='btn btn-dark' onClick={search}>
+				<button className={`btn btn-${color.theme}`} onClick={search}>
 					Szukaj
 				</button>
 			</div>

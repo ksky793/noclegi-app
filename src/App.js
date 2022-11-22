@@ -6,7 +6,8 @@ import Searchbar from './components/header/searchbar/Searchbar';
 import Footer from './components/footer/Footer';
 import Layout from './components/layout/Layout';
 import { useState } from 'react';
-
+import ThemeButton from './components/ui/themeButton/ThemeButton';
+import ThemeContext from './context/ThemeContext';
 const hotelsData = [
 	{
 		name: 'Pod Akcjami',
@@ -26,6 +27,7 @@ const hotelsData = [
 
 function App() {
 	const [hotels, setHotels] = useState(hotelsData);
+	const [theme, setTheme] = useState('dark');
 
 	const handleOnSearchHotels = (term) => {
 		const newHotels = [...hotelsData].filter((hotel) =>
@@ -33,17 +35,30 @@ function App() {
 		);
 		setHotels(newHotels);
 	};
+
+	const changeTheme = () => {
+		const newTheme = theme === 'primary' ? 'dark' : 'primary';
+		setTheme(newTheme);
+	};
 	return (
-		<Layout
-			header={
-				<Header>
-					<Searchbar onSearch={(term) => handleOnSearchHotels(term)} />
-				</Header>
-			}
-			menu={<Menu />}
-			hotels={<Hotels hotels={hotels} />}
-			footer={<Footer />}
-		/>
+		<ThemeContext.Provider
+			value={{
+				theme: theme,
+				changeTheme: changeTheme,
+			}}
+		>
+			<Layout
+				header={
+					<Header>
+						<Searchbar onSearch={(term) => handleOnSearchHotels(term)} />
+						<ThemeButton />
+					</Header>
+				}
+				menu={<Menu />}
+				hotels={<Hotels hotels={hotels} />}
+				footer={<Footer />}
+			/>
+		</ThemeContext.Provider>
 	);
 }
 
