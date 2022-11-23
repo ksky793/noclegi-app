@@ -5,9 +5,10 @@ import Hotels from './components/hotels/Hotels';
 import Searchbar from './components/header/searchbar/Searchbar';
 import Footer from './components/footer/Footer';
 import Layout from './components/layout/Layout';
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import ThemeButton from './components/ui/themeButton/ThemeButton';
 import ThemeContext from './context/ThemeContext';
+
 const hotelsData = [
 	{
 		name: 'Pod Akcjami',
@@ -25,25 +26,43 @@ const hotelsData = [
 	},
 ];
 
+const initialState = {
+	hotels: [],
+	theme: 'dark',
+};
+
+const reducer = (state, action) => {
+	switch (action.type) {
+		case 'change-theme':
+			const theme = state.theme === 'dark' ? 'primary' : 'dark';
+			return { ...state, theme };
+		case 'set-hotels':
+			return { ...state, hotels: action.hotels };
+	}
+};
+
 function App() {
-	const [hotels, setHotels] = useState(hotelsData);
-	const [theme, setTheme] = useState('dark');
+	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const handleOnSearchHotels = (term) => {
 		const newHotels = [...hotelsData].filter((hotel) =>
 			hotel.name.toLowerCase().includes(term.toLowerCase())
 		);
-		setHotels(newHotels);
+		dispatch({ type: 'set-hotels', hotels: newHotels });
 	};
 
 	const changeTheme = () => {
-		const newTheme = theme === 'primary' ? 'dark' : 'primary';
-		setTheme(newTheme);
+		dispatch({ type: 'change-theme' });
 	};
+
+	useEffect(()=>{
+		dispatch({type: 'set-hotels', hotels: hotelsData})
+	}, [])
+
 	return (
 		<ThemeContext.Provider
 			value={{
-				theme: theme,
+				theme: state.theme,
 				changeTheme: changeTheme,
 			}}
 		>
@@ -55,7 +74,7 @@ function App() {
 					</Header>
 				}
 				menu={<Menu />}
-				hotels={<Hotels hotels={hotels} />}
+				hotels={<Hotels hotels={state.hotels} />}
 				footer={<Footer />}
 			/>
 		</ThemeContext.Provider>
