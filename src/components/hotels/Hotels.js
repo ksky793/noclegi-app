@@ -5,7 +5,7 @@ const Hotels = (props) => {
 		<div className={`${styles.container}`}>
 			<h2 className={`${styles.title}`}>Oferty:</h2>
 			{props.hotels.map((hotel, index) => (
-				<Hotel {...hotel} key={index} />
+				<Hotel {...hotel} key={index} onOpen={props.onOpen} />
 			))}
 		</div>
 	);

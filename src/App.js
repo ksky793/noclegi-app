@@ -8,7 +8,9 @@ import Layout from './components/layout/Layout';
 import { useEffect, useReducer, useState } from 'react';
 import ThemeButton from './components/ui/themeButton/ThemeButton';
 import ThemeContext from './context/ThemeContext';
-
+import BestHotel from './components/hotels/bestHotel/BestHotel';
+import useLocalStorage from './hooks/useLocalStorage';
+import LastHotel from './components/hotels/lastHotel/LastHotel';
 const hotelsData = [
 	{
 		name: 'Pod Akcjami',
@@ -43,6 +45,8 @@ const reducer = (state, action) => {
 
 function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	// własny hook zapisujący stan do local storage
+	const [lastHotel, setLastHotel] = useLocalStorage('last-hotel', null);
 
 	const handleOnSearchHotels = (term) => {
 		const newHotels = [...hotelsData].filter((hotel) =>
@@ -51,19 +55,23 @@ function App() {
 		dispatch({ type: 'set-hotels', hotels: newHotels });
 	};
 
-	const changeTheme = () => {
-		dispatch({ type: 'change-theme' });
+	const openHotel = (hotel) => {
+		setLastHotel(hotel);
 	};
-
-	useEffect(()=>{
-		dispatch({type: 'set-hotels', hotels: hotelsData})
-	}, [])
+	const removeLastHotel = () => {
+		setLastHotel(null);
+	};
+	useEffect(() => {
+		dispatch({ type: 'set-hotels', hotels: hotelsData });
+	}, []);
 
 	return (
 		<ThemeContext.Provider
 			value={{
 				theme: state.theme,
-				changeTheme: changeTheme,
+				changeTheme: () => {
+					dispatch({ type: 'change-theme' });
+				},
 			}}
 		>
 			<Layout
@@ -74,7 +82,14 @@ function App() {
 					</Header>
 				}
 				menu={<Menu />}
-				hotels={<Hotels hotels={state.hotels} />}
+				content={
+					<>
+						{lastHotel && (
+							<LastHotel {...lastHotel} onRemove={removeLastHotel} />
+						)}
+						<Hotels onOpen={openHotel} hotels={state.hotels} />
+					</>
+				}
 				footer={<Footer />}
 			/>
 		</ThemeContext.Provider>

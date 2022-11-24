@@ -4,6 +4,9 @@ import ThemeContext from '../../../context/ThemeContext';
 import { useContext } from 'react';
 const Hotel = (props) => {
 	const { theme } = useContext(ThemeContext);
+	const handleClick = () => {
+		props.onOpen(props);
+	};
 	return (
 		<div className={`${styles.hotel}`}>
 			<div className={`${styles.top}`}>
@@ -13,7 +16,9 @@ const Hotel = (props) => {
 				<h5 className={`${styles.title}`}>{props.name}</h5>
 				<h5 className={`${styles.title}`}>{`Ocena: ${props.rating}`}</h5>
 				<p className={`${styles.description}`}>{props.description}</p>
-				<button className={`btn btn-${theme}`}>Pokaż</button>
+				<button className={`btn btn-${theme}`} onClick={handleClick}>
+					Pokaż
+				</button>
 			</div>
 		</div>
 	);
