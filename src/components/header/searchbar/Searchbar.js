@@ -1,12 +1,13 @@
 import { useContext, useState } from 'react';
 import ThemeContext from '../../../context/ThemeContext';
-
+import { useNavigate } from 'react-router-dom';
 const Searchbar = (props) => {
+	const navigate = useNavigate();
 	const color = useContext(ThemeContext);
 	const [term, setTerm] = useState('');
 
 	const search = () => {
-		props.onSearch(term);
+		term === '' ? navigate('/') : navigate(`/szukaj/${term}`);
 	};
 
 	return (
