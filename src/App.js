@@ -8,11 +8,18 @@ import Layout from './components/layout/Layout';
 import { useEffect, useReducer, useState } from 'react';
 import ThemeButton from './components/ui/themeButton/ThemeButton';
 import ThemeContext from './context/ThemeContext';
+import ReducerContext from './context/ReducerContext';
 import BestHotel from './components/hotels/bestHotel/BestHotel';
 import useLocalStorage from './hooks/useLocalStorage';
 import LastHotel from './components/hotels/lastHotel/LastHotel';
+import { Routes, Route } from 'react-router-dom';
+import { initialState, reducer } from './reducer';
+import Home from './pages/Home';
+import Search from './pages/Search';
+
 const hotelsData = [
 	{
+		id: 1,
 		name: 'Pod Akcjami',
 		city: 'Warszawa',
 		rating: '8.5',
@@ -20,6 +27,7 @@ const hotelsData = [
 		image: 'img',
 	},
 	{
+		id: 2,
 		name: 'Wolind',
 		city: 'Białystok',
 		rating: '8.5',
@@ -28,43 +36,34 @@ const hotelsData = [
 	},
 ];
 
-const initialState = {
-	hotels: [],
-	theme: 'dark',
-};
-
-const reducer = (state, action) => {
-	switch (action.type) {
-		case 'change-theme':
-			const theme = state.theme === 'dark' ? 'primary' : 'dark';
-			return { ...state, theme };
-		case 'set-hotels':
-			return { ...state, hotels: action.hotels };
-	}
-};
-
 function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	// własny hook zapisujący stan do local storage
-	const [lastHotel, setLastHotel] = useLocalStorage('last-hotel', null);
 
-	const handleOnSearchHotels = (term) => {
-		const newHotels = [...hotelsData].filter((hotel) =>
-			hotel.name.toLowerCase().includes(term.toLowerCase())
-		);
-		dispatch({ type: 'set-hotels', hotels: newHotels });
-	};
+	const header = (
+		<Header>
+			<Searchbar />
+			<ThemeButton />
+		</Header>
+	);
 
-	const openHotel = (hotel) => {
-		setLastHotel(hotel);
-	};
-	const removeLastHotel = () => {
-		setLastHotel(null);
-	};
-	useEffect(() => {
-		dispatch({ type: 'set-hotels', hotels: hotelsData });
-	}, []);
+	const content = (
+		<>
+			<Routes>
+				<Route path='/' element={<Home />} />
+				<Route path='/szukaj/:term' element={<Search />} />
+				<Route
+					path='/profil'
+					element={
+						<>PRofil</>
+					}
+				/>
+			</Routes>
+		</>
+	);
 
+	const footer = <Footer />;
+
+	const menu = <Menu />;
 	return (
 		<ThemeContext.Provider
 			value={{
@@ -74,24 +73,9 @@ function App() {
 				},
 			}}
 		>
-			<Layout
-				header={
-					<Header>
-						<Searchbar onSearch={(term) => handleOnSearchHotels(term)} />
-						<ThemeButton />
-					</Header>
-				}
-				menu={<Menu />}
-				content={
-					<>
-						{lastHotel && (
-							<LastHotel {...lastHotel} onRemove={removeLastHotel} />
-						)}
-						<Hotels onOpen={openHotel} hotels={state.hotels} />
-					</>
-				}
-				footer={<Footer />}
-			/>
+			<ReducerContext.Provider value={{ state: state, dispatch: dispatch }}>
+				<Layout header={header} menu={menu} content={content} footer={footer} />
+			</ReducerContext.Provider>
 		</ThemeContext.Provider>
 	);
 }
