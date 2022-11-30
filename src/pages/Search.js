@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Hotels from '../components/hotels/Hotels';
-import LoadingButton from '../components/ui/themeButton/LoadingButton';
+import LoadingButton from '../components/ui/LoadingIcon';
 
 const hotelsData = [
 	{

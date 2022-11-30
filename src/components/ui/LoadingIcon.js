@@ -1,8 +1,7 @@
 import { useContext } from 'react';
-import ThemeContext from '../../../context/ThemeContext';
-const LoadingButton = () => {
+import ThemeContext from '../../context/ThemeContext';
+const LoadingIcon = () => {
 	const { theme } = useContext(ThemeContext);
-	const styles = {};
 	return (
 		<div className='text-center mt-5 mb-5'>
 			<div className={`spinner-border text-${theme}`} role='status'>
@@ -12,4 +11,4 @@ const LoadingButton = () => {
 	);
 };
 
-export default LoadingButton;
+export default LoadingIcon;

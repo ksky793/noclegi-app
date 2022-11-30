@@ -4,7 +4,7 @@ import LastHotel from '../components/hotels/lastHotel/LastHotel';
 import ReducerContext from '../context/ReducerContext';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { useEffect } from 'react';
-import LoadingButton from '../components/ui/themeButton/LoadingButton';
+import LoadingIcon from '../components/ui/LoadingIcon';
 const hotelsData = [
 	{
 		id: 1,
@@ -37,22 +37,18 @@ const Home = () => {
 	};
 
 	useEffect(() => {
-		if (loading) {
-			setTimeout(() => {
+		setTimeout(() => {
+			if (loading) {
 				reducer.dispatch({ type: 'set-hotels', hotels: hotelsData });
 				setLoading(false);
-			}, 1000);
-		}
+			}
+		}, 1000);
 	}, []);
 
-	{
-		lastHotel && <LastHotel {...lastHotel} onRemove={removeLastHotel} />;
-	}
-	<Hotels onOpen={openHotel} hotels={reducer.state.hotels} />;
 	return (
 		<>
 			{loading ? (
-				<LoadingButton />
+				<LoadingIcon />
 			) : (
 				<>
 					{lastHotel && <LastHotel {...lastHotel} onRemove={removeLastHotel} />}
