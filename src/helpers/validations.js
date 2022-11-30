@@ -11,6 +11,9 @@ const availableRules = {
 	min(value, rule) {
 		return value.length >= rule.length ? '' : `Min. ${rule.length} znaki`;
 	},
+	email(value) {
+		return validateEmail(value) ? '' : 'Email niepoprawny';
+	},
 };
 
 export const isFormValid = (form) => {

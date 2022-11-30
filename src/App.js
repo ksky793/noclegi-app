@@ -20,6 +20,7 @@ import NotFound from './pages/404/404';
 import Login from './pages/auth/Login';
 import AuthenticatedRoute from './components/authenticatedRoute/AuthenticatedRoute';
 import AddHotel from './pages/profile/myHotels/addHotel/AddHotel';
+import Register from './pages/auth/Register';
 
 function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -50,6 +51,7 @@ function App() {
 				/>
 
 				<Route path='/zaloguj' element={<Login />} />
+				<Route path='/rejestracja' element={<Register />} />
 				<Route path='*' element={<NotFound />} />
 			</Routes>
 		</>
