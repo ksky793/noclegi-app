@@ -1,6 +1,8 @@
 import { useContext } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import ThemeContext from '../../../context/ThemeContext';
 const LastHotel = (props) => {
+	const navigate = useNavigate();
 	const { theme } = useContext(ThemeContext);
 
 	return (
@@ -15,6 +17,7 @@ const LastHotel = (props) => {
 					<button
 						className={`btn btn-${theme}`}
 						style={{ marginRight: '20px' }}
+						onClick={() => navigate(`/hotel/${props.id}`)}
 					>
 						Tak
 					</button>

@@ -16,7 +16,9 @@ const Hotel = (props) => {
 			</div>
 			<div className={`${styles.bottom}`}>
 				<h5 className={`${styles.title}`}>{props.name}</h5>
-				<h5 className={`${styles.title}`}>{`Ocena: ${props.rating}`}</h5>
+				<h5 className={`${styles.title}`}>{`Ocena: ${
+					props.rating || 'Brak oceny'
+				}`}</h5>
 				<p className={`${styles.description}`}>{props.description}</p>
 				<Link to={`/hotel/${props.id}`}>
 					<button className={`btn btn-${theme}`} onClick={handleClick}>

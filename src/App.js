@@ -21,6 +21,9 @@ import Login from './pages/auth/Login';
 import AuthenticatedRoute from './components/authenticatedRoute/AuthenticatedRoute';
 import AddHotel from './pages/profile/myHotels/addHotel/AddHotel';
 import Register from './pages/auth/Register';
+import EditHotel from './pages/profile/myHotels/editHotel/EditHotel';
+import Hotel from './components/hotels/hotel/Hotel';
+import HotelDetails from './pages/hotelDetails/HotelDetails';
 
 function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -49,7 +52,12 @@ function App() {
 					path='/profil/hotele/dodaj'
 					element={<AuthenticatedRoute element={<AddHotel />} />}
 				/>
+				<Route
+					path='/profil/hotele/edytuj/:hotelId'
+					element={<AuthenticatedRoute element={<EditHotel />} />}
+				/>
 
+				<Route path='/hotel/:hotelId' element={<HotelDetails />} />
 				<Route path='/zaloguj' element={<Login />} />
 				<Route path='/rejestracja' element={<Register />} />
 				<Route path='*' element={<NotFound />} />
@@ -63,8 +71,9 @@ function App() {
 	return (
 		<AuthContext.Provider
 			value={{
-				isAuthenticated: state.isAuthenticated,
-				login: () => dispatch({ type: 'login' }),
+				// isAuthenticated: state.isAuthenticated,
+				user: state.user,
+				login: (user) => dispatch({ type: 'login', user: user }),
 				logout: () => dispatch({ type: 'logout' }),
 			}}
 		>
