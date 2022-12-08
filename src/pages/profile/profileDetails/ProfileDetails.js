@@ -1,26 +1,49 @@
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
 import LoadingButton from '../../../components/ui/LoadingButton';
+import { AuthContext } from '../../../context/AuthContext';
 import { validateEmail } from '../../../helpers/validations';
+import useAuth from '../../../hooks/useAuth';
 const ProfileDetails = () => {
-	const [email, setEmail] = useState('kamil@gmail.com');
+	const [auth] = useAuth();
+
+	const [email, setEmail] = useState(auth.email);
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState({
 		email: '',
 		password: '',
+		submit: '',
 	});
 
 	const buttonDisabled = Object.values(errors).filter(
 		(error) => error !== ''
 	).length;
-	const submit = (e) => {
+	const submit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
 
-		setTimeout(() => {
-			console.log(buttonDisabled);
+		const data = {
+			idToken: auth.idToken,
+			email: email,
+			returnSecureToken: true,
+		};
+		if (password) {
+			data.password = password;
+		}
+		try {
+			const res = await axios.post(
+				'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAJ5Eo5P6ilmu2S6KpAG8MTnSQUczMdrF4',
+				data
+			);
+			console.log(res);
+			setErrors({ ...errors, submit: 'Pomyślnie zaktualizowano dane' });
 			setLoading(false);
-		}, 1000);
+		} catch (e) {
+			console.log(e.response);
+			setErrors({ ...errors, submit: e.response.data.error.message });
+			setLoading(false);
+		}
 	};
 
 	useEffect(() => {
@@ -44,6 +67,9 @@ const ProfileDetails = () => {
 	return (
 		<form onSubmit={submit}>
 			<div className='form-group mb-3'>
+				{errors.submit && (
+					<div className='alert alert-primary'>{errors.submit}</div>
+				)}
 				<label>Email</label>
 				<input
 					type='email'
@@ -65,7 +91,9 @@ const ProfileDetails = () => {
 				/>
 				<div className='invalid-feedback'>{errors.password}</div>
 			</div>
-			<LoadingButton loading={loading} disabled={buttonDisabled}>Zapisz</LoadingButton>
+			<LoadingButton loading={loading} disabled={buttonDisabled}>
+				Zapisz
+			</LoadingButton>
 		</form>
 	);
 };
