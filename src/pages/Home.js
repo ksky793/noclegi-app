@@ -5,6 +5,8 @@ import ReducerContext from '../context/ReducerContext';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { useEffect } from 'react';
 import LoadingIcon from '../components/ui/LoadingIcon';
+import axios from '../axios';
+import { getArrayFromObject } from '../helpers/objects';
 const hotelsData = [
 	{
 		id: 1,
@@ -23,11 +25,13 @@ const hotelsData = [
 		image: 'img',
 	},
 ];
+
 const Home = () => {
 	const reducer = useContext(ReducerContext);
 	// własny hook zapisujący stan do local storage
 	const [lastHotel, setLastHotel] = useLocalStorage('last-hotel', null);
 	const [loading, setLoading] = useState(true);
+	const [hotels, setHotels] = useState([]);
 
 	const openHotel = (hotel) => {
 		setLastHotel(hotel);
@@ -36,13 +40,23 @@ const Home = () => {
 		setLastHotel(null);
 	};
 
+	const fetchHotels = async () => {
+		try {
+			const res = await axios.get('/hotels.json');
+			// chcemy wyświetlić hotele, które mają status widoczne = 1
+			const newHotels = getArrayFromObject(res).filter(
+				(hotel) => hotel.status === '1'
+			);
+			setLoading(false);
+			setHotels(newHotels);
+		} catch (e) {
+			console.log(e.response);
+			setLoading(false);
+		}
+	};
+	
 	useEffect(() => {
-		setTimeout(() => {
-			if (loading) {
-				reducer.dispatch({ type: 'set-hotels', hotels: hotelsData });
-				setLoading(false);
-			}
-		}, 1000);
+		fetchHotels();
 	}, []);
 
 	return (
@@ -52,7 +66,7 @@ const Home = () => {
 			) : (
 				<>
 					{lastHotel && <LastHotel {...lastHotel} onRemove={removeLastHotel} />}
-					<Hotels onOpen={openHotel} hotels={reducer.state.hotels} />
+					<Hotels onOpen={openHotel} hotels={hotels} />
 				</>
 			)}
 		</>

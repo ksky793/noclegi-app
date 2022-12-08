@@ -20,6 +20,7 @@ export const isFormValid = (form) => {
 	// przekształcanie obiektu na elementy w tablicy, aby móc wyliczyć długość
 	const formLength = Object.keys(form).length;
 
+	// console.log(form);
 	// wyświetlamy tylko te elementy, gdzie wartość valid jest true, a następnie zwracamy długość takiej tablicy
 	const newFormLength = Object.values(form).filter(
 		(val) => val.valid === true
