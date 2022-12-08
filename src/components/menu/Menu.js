@@ -27,6 +27,7 @@ const Menu = () => {
 						<Nav.Link as={Link} to='/'>
 							Strona Główna
 						</Nav.Link>
+
 						{auth ? (
 							<>
 								<Nav.Link as={Link} to='/profil'>
@@ -36,7 +37,12 @@ const Menu = () => {
 							</>
 						) : (
 							<>
-								<Nav.Link onClick={login}>Zaloguj</Nav.Link>
+								<Nav.Link as={Link} to='/zaloguj'>
+									Zaloguj
+								</Nav.Link>
+								<Nav.Link as={Link} to='/rejestracja'>
+									Zarejestruj
+								</Nav.Link>
 							</>
 						)}
 					</Nav>

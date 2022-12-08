@@ -3,12 +3,18 @@ import { AuthContext } from '../context/AuthContext';
 
 const useAuth = () => {
 	const authContext = useContext(AuthContext);
-	const auth = authContext.isAuthenticated;
+	const auth = authContext.user;
 
-	const setAuth = (value) => {
+	const setAuth = (value, user) => {
 		if (value) {
-			authContext.login();
-		} else authContext.logout();
+			if (user)
+				window.localStorage.setItem('token-data', JSON.stringify(user));
+
+			authContext.login(user);
+		} else {
+			window.localStorage.removeItem('token-data');
+			authContext.logout();
+		}
 	};
 	return [auth, setAuth];
 };
