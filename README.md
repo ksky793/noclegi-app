@@ -8,6 +8,7 @@
 <li>dodawanie/usuwanie/edycja hoteli</li>
 <li>zmiana e-mail lub hasła</li>
 <li>dodawanie opinii/komentarza pod danym hotelem</li> 
+<li>zmiana motywu koloru</li>
 </ul>
 
 <h2>Ograniczenia</h2>
@@ -21,3 +22,6 @@ Frontend: React.js
 Baza Danych: firebase 
 </br>
 Backend: Firebase (logowanie,rejestracja,zmiana danych konta) 
+
+
+
