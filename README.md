@@ -1,4 +1,4 @@
-<h1>Noclegi<\h1>
+Noclegi
 Aplikacja umożliwiająca zarządzanie i wyświetlanie noclegów/hoteli
 
 Wymagania funkcjonalne:
